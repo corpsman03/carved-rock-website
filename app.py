@@ -15,6 +15,45 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'admin_login'
 
+# Initialize database on app startup
+@app.before_request
+def initialize_database():
+    """Initialize database tables and sample data on first request"""
+    if not hasattr(app, 'db_initialized'):
+        with app.app_context():
+            db.create_all()
+            
+            # Check if data already exists
+            if not Product.query.first():
+                # Sample products
+                products = [
+                    Product(name='Carabiners Pro', description='Professional carabiners for rock climbing', 
+                           price=49.99, category='Carabiners', image_url='https://placehold.co/300x300/34323f/ffffff?text=Carabiners', in_stock=True),
+                    Product(name='Ice Axes Bundle', description='Complete ice climbing axes set', 
+                           price=199.99, category='Ice Axes', image_url='https://placehold.co/300x300/34323f/ffffff?text=Ice+Axes', in_stock=True),
+                    Product(name='Climbing Rope 50m', description='High-quality climbing rope 50 meters', 
+                           price=89.99, category='Ropes', image_url='https://placehold.co/300x300/34323f/ffffff?text=Climbing+Rope', in_stock=True),
+                ]
+                
+                # Sample posts
+                posts = [
+                    Post(title='Carabiners for Diwali Sale', 
+                        content='Get 20% off on all carabiners this season. Professional grade equipment at unbeatable prices.',
+                        image_url='https://placehold.co/600x400/34323f/ffffff?text=Carabiner+Sale'),
+                    Post(title='Ice Axes On Sale', 
+                        content='Premium ice climbing equipment now available. Perfect for winter climbing season.',
+                        image_url='https://placehold.co/600x400/34323f/ffffff?text=Ice+Axes+Sale'),
+                ]
+                
+                for product in products:
+                    db.session.add(product)
+                for post in posts:
+                    db.session.add(post)
+                
+                db.session.commit()
+            
+            app.db_initialized = True
+
 @login_manager.user_loader
 def load_user(user_id):
     return Admin.query.get(int(user_id))
@@ -149,7 +188,7 @@ def add_product():
             description=request.form.get('description'),
             price=float(request.form.get('price')),
             category=request.form.get('category'),
-            image_url=request.form.get('image_url', '/static/images/placeholder.jpg'),
+            image_url=request.form.get('image_url', 'https://placehold.co/300x300/34323f/ffffff?text=Product'),
             in_stock=request.form.get('in_stock') == 'on'
         )
         db.session.add(product)
@@ -174,7 +213,7 @@ def add_post():
         post = Post(
             title=request.form.get('title'),
             content=request.form.get('content'),
-            image_url=request.form.get('image_url', '/static/images/placeholder.jpg')
+            image_url=request.form.get('image_url', 'https://placehold.co/600x400/34323f/ffffff?text=Article')
         )
         db.session.add(post)
         db.session.commit()

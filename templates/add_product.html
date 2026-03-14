@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product - Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Add New Product</h1>
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold">Product Name *</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold">Description *</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="price" class="form-label fw-bold">Price ($) *</label>
+                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="category" class="form-label fw-bold">Category *</label>
+                        <input type="text" class="form-control" id="category" name="category" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image_url" class="form-label fw-bold">Image URL</label>
+                    <input type="text" class="form-control" id="image_url" name="image_url" placeholder="/static/images/product.jpg">
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="in_stock" name="in_stock" checked>
+                    <label class="form-check-label" for="in_stock">In Stock</label>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <a href="/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

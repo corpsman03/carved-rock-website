@@ -1,29 +1,53 @@
-# Build stage: install Hugo and generate the static site
-FROM alpine:3.18 AS builder
+# Multi-stage build for Carved Rock Flask Application
 
-# Set Hugo version and arch to match the target platform
-ARG HUGO_VERSION=0.120.4
-ARG HUGO_ARCH=Linux-ARM64
+# Stage 1: Builder
+FROM python:3.11-slim as builder
 
-# Install dependencies needed to download and extract Hugo
-RUN apk add --no-cache curl tar xz dpkg
+WORKDIR /app
 
-WORKDIR /src
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Download and extract the Hugo binary for the current architecture
-RUN curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_${HUGO_ARCH}.deb" -o /tmp/hugo.deb \
-  && dpkg -x /tmp/hugo.deb /tmp/hugo \
-  && mv /tmp/hugo/usr/local/bin/hugo /usr/local/bin/hugo \
-  && chmod +x /usr/local/bin/hugo
+# Copy requirements and create wheels
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
-# Copy source and build
+# Stage 2: Runtime
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install runtime dependencies for SQLite
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy wheels from builder
+COPY --from=builder /app/wheels /wheels
+COPY --from=builder /app/requirements.txt .
+
+# Install Python packages from wheels
+RUN pip install --no-cache /wheels/*
+
+# Copy application code
 COPY . .
-RUN hugo mod get && hugo
 
-# Final stage: serve the generated site using a small web server
-FROM nginx:1.25-alpine
+# Create necessary directories
+RUN mkdir -p /app/instance
 
-COPY --from=builder /src/public /usr/share/nginx/html
+# Set environment variables
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+ENV PYTHONUNBUFFERED=1
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Expose port
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:5000')" || exit 1
+
+# Run Flask application with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-", "app:app"]

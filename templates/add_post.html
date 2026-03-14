@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Add Article - Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Add New Article</h1>
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="title" class="form-label fw-bold">Title *</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="content" class="form-label fw-bold">Content *</label>
+                    <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image_url" class="form-label fw-bold">Image URL</label>
+                    <input type="text" class="form-control" id="image_url" name="image_url" placeholder="/static/images/article.jpg">
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">Publish Article</button>
+                    <a href="/admin/dashboard" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

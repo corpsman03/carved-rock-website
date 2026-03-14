@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - Carved Rock Fitness{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Contact Us</h1>
+            <p class="text-muted mb-4">Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+
+            <form method="POST" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label fw-bold">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">Send Message</button>
+            </form>
+
+            <hr class="my-5">
+
+            <div class="row text-center">
+                <div class="col-md-4 mb-3">
+                    <h5>📍 Location</h5>
+                    <p class="text-muted">123 Mountain Road<br>Peak City, ST 12345</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>📞 Phone</h5>
+                    <p class="text-muted">(555) 123-4567</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>📧 Email</h5>
+                    <p class="text-muted">info@carvedrockfitness.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

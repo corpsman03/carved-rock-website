@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - Carved Rock Fitness{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <div class="display-1 text-danger">500</div>
+            <h1 class="mb-3">Internal Server Error</h1>
+            <p class="lead mb-4">Something went wrong on our end. We're working on fixing it!</p>
+
+            <div class="alert alert-warning" role="alert">
+                <strong>Error:</strong> The server encountered an unexpected condition that prevented it from fulfilling the request.
+            </div>
+
+            <p class="mb-4">Our team has been notified. Please try again in a few moments.</p>
+
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/" class="btn btn-primary btn-lg px-4 gap-3">Home</a>
+                <a href="/contact" class="btn btn-secondary btn-lg px-4">Report Issue</a>
+            </div>
+
+            <div class="mt-5">
+                <img src="https://via.placeholder.com/300x300?text=500+Error" alt="Server error" class="img-fluid rounded" style="max-width: 300px;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

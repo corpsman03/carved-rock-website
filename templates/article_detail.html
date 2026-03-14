@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - Carved Rock Fitness{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <!-- Article Header -->
+            <article>
+                <h1 class="mb-2">{{ post.title }}</h1>
+                <div class="text-muted mb-4">
+                    <small>Published on {{ post.created_at.strftime('%B %d, %Y') }}</small>
+                </div>
+
+                <!-- Article Image -->
+                {% if post.image_url %}
+                <img src="{{ post.image_url }}" alt="{{ post.title }}" class="img-fluid rounded mb-4" style="max-height: 400px; object-fit: cover; width: 100%;">
+                {% endif %}
+
+                <!-- Article Content -->
+                <div class="article-content mb-5 lh-lg">
+                    {{ post.content }}
+                </div>
+
+                <!-- Back Links -->
+                <nav aria-label="Article navigation" class="mt-5 pt-4 border-top">
+                    <a href="/articles" class="btn btn-outline-primary">← Back to Articles</a>
+                    <a href="/" class="btn btn-outline-secondary">Home</a>
+                </nav>
+            </article>
+
+            <!-- Related Articles Section -->
+            <div class="mt-5 pt-4">
+                <h3 class="mb-4">More Articles</h3>
+                <div class="row">
+                    {% for related in related_posts[:3] %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            {% if related.image_url %}
+                            <img src="{{ related.image_url }}" class="card-img-top" alt="{{ related.title }}" style="height: 180px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h6 class="card-title">{{ related.title[:50] }}...</h6>
+                                <a href="/article/{{ related.id }}" class="btn btn-sm btn-primary mt-2">Read</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .article-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    .article-content p {
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}

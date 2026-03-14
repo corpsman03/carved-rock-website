@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 20px; text-align: center;">
+    <div class="container">
+        <h1 class="display-3 fw-bold">Welcome to Carved Rock Fitness</h1>
+        <p class="lead">Premium rock climbing gear for adventurers</p>
+        <a href="/products" class="btn btn-light btn-lg">Shop Now</a>
+    </div>
+</div>
+
+<div class="container py-5">
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Featured Products</h2>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description[:100] }}...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 mb-0 text-primary">${{ "%.2f"|format(product.price) }}</span>
+                            <a href="/product/{{ product.id }}" class="btn btn-sm btn-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Latest Articles</h2>
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ post.image_url }}" class="img-fluid rounded-start" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text">{{ post.content[:100] }}...</p>
+                                <small class="text-muted">{{ post.created_at.strftime('%B %d, %Y') }}</small><br>
+                                <a href="/article/{{ post.id }}" class="btn btn-sm btn-primary mt-2">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

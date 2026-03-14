@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - Carved Rock Fitness{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <div class="display-1 text-danger">404</div>
+            <h1 class="mb-3">Page Not Found</h1>
+            <p class="lead mb-4">The page you're looking for has disappeared like a climber on a difficult route.</p>
+
+            <div class="alert alert-info" role="alert">
+                The URL you requested doesn't exist. Here are some helpful links:
+            </div>
+
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="/" class="btn btn-primary btn-lg px-4 gap-3">Home</a>
+                <a href="/products" class="btn btn-secondary btn-lg px-4">Shop Products</a>
+                <a href="/articles" class="btn btn-secondary btn-lg px-4">Read Articles</a>
+                <a href="/contact" class="btn btn-outline-secondary btn-lg px-4">Contact Us</a>
+            </div>
+
+            <div class="mt-5">
+                <img src="https://via.placeholder.com/300x300?text=404+Error" alt="Lost climber" class="img-fluid rounded" style="max-width: 300px;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

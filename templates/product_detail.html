@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Carved Rock Fitness{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image_url }}" class="img-fluid rounded" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <span class="badge bg-primary mb-3">{{ product.category }}</span>
+            
+            <h3 class="text-primary my-3">${{ "%.2f"|format(product.price) }}</h3>
+            
+            <p class="lead">{{ product.description }}</p>
+
+            <div class="mt-5">
+                {% if product.in_stock %}
+                <button class="btn btn-lg btn-success" onclick="alert('Added to cart!')">Add to Cart</button>
+                {% else %}
+                <button class="btn btn-lg btn-secondary" disabled>Out of Stock</button>
+                {% endif %}
+            </div>
+
+            <hr class="my-4">
+            
+            <h5>Product Details</h5>
+            <ul>
+                <li><strong>Status:</strong> {% if product.in_stock %}<span class="text-success">In Stock</span>{% else %}<span class="text-danger">Out of Stock</span>{% endif %}</li>
+                <li><strong>Category:</strong> {{ product.category }}</li>
+                <li><strong>Added:</strong> {{ product.created_at.strftime('%B %d, %Y') }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="/products" class="btn btn-outline-secondary">← Back to Products</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Articles - Carved Rock Fitness{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Climbing & Fitness Articles</h1>
+
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm hover-shadow">
+                {% if post.image_url %}
+                <img src="{{ post.image_url }}" class="card-img-top" alt="{{ post.title }}" style="height: 250px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light card-img-top d-flex align-items-center justify-content-center" style="height: 250px;">
+                    <span class="text-muted">No Image</span>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text text-muted small">
+                        Published: {{ post.created_at.strftime('%B %d, %Y') }}
+                    </p>
+                    <p class="card-text">{{ post.content[:150] }}...</p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="/article/{{ post.id }}" class="btn btn-primary btn-sm">Read Full Article</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="alert alert-info">No articles available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        transition: box-shadow 0.3s ease;
+    }
+</style>
+{% endblock %}
